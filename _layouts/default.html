@@ -42,7 +42,8 @@
 
       {{ content }}
 
-      TEST
+      Drag this to your bookmarks
+      <a href='javascript:(()=>{if(window.videoSpeedBookmarkShow)return void window.videoSpeedBookmarkShow("video-speed-bookmark already added");window.videoSpeedBookmarkShow=n;const e=document.createElement("div");let o;Object.assign(e.style,{backgroundColor:"#CCC",color:"#000",position:"fixed",top:"0px",right:"0px",padding:"8px 12px",borderBottomLeftRadius:"5px",fontFamily:"Helvetica",fontSize:"16px",fontWeight:"normal"});let t="";const d={Control:!1,Alt:!1};function n(t){o&&clearTimeout(o),e.innerText=t,document.body.appendChild(e)}function i(){e.remove()}function r(e){n(e),o=setTimeout(i,2e3)}document.addEventListener("keydown",e=>{const o=e.key;if(void 0!==d[o])return d[o]=!0,void(Object.values(d).every(e=>e)&&(t="",n("Enter speed")));Object.values(d).every(e=>e)&&n(`${t+=o}x`)}),document.addEventListener("keyup",e=>{const o=e.key;if(void 0===d[o])return;if(!Object.values(d).every(e=>e))return void(d[o]=!1);if(d[o]=!1,!t)return void i();const n=parseFloat(t);if(t="",isNaN(n))return void r("Invalid speed");const a=document.querySelector("video");a?(r(`${n}x`),a.playbackRate=n):r("No video found")}),r("video-speed-bookmark added")})();'>Add video speed</a>
 
       </section>
       <footer>
