@@ -22,37 +22,55 @@
 
   let timer;
 
-  let speed = 0;
-  let dotActive = false;
+  let xDown = false;
+  let enteredSpeed = "";
 
   document.addEventListener("keydown", event => {
-    if (event.key === ".") {
-      dotActive = true;
+    if (event.key === "x") {
+      xDown = true;
       return;
     }
 
-    let digit = parseInt(event.key);
-    if (digit || digit === 0) {
-      let newSpeed = digit;
-      if (dotActive) {
-        newSpeed = speed + 0.1 * newSpeed;
-        speed = 0;
-      } else {
-        speed = newSpeed;
-      }
-
-      show(newSpeed);
-      document.querySelector("video").playbackRate = newSpeed;
+    if (xDown) {
+      enteredSpeed += event.key;
+      show(`${enteredSpeed}x`);
     }
-
-    dotActive = false;
   });
 
-  function show(speed) {
+  document.addEventListener("keyup", event => {
+    if (event.key !== "x") {
+      return;
+    }
+
+    xDown = false;
+
+    if (!enteredSpeed) {
+      return;
+    }
+
+    const speed = parseFloat(enteredSpeed);
+    enteredSpeed = "";
+
+    if (isNaN(speed)) {
+      show("Invalid speed");
+      return;
+    }
+
+    const video = document.querySelector("video");
+    if (!video) {
+      show("No video found");
+      return;
+    }
+
+    show(`${speed}x`);
+    video.playbackRate = speed;
+  });
+
+  function show(text) {
     if (timer) {
       clearTimeout(timer);
     }
-    element.innerText = `${speed}x`;
+    element.innerText = text;
     document.body.appendChild(element);
 
     timer = setTimeout(() => {
