@@ -1,10 +1,10 @@
 (() => {
-  if (window.videoSpeedBookmarkShow) {
-    window.videoSpeedBookmarkShow("video-speed-bookmark already added");
+  if (window.videoSpeedBookmarkFlash) {
+    window.videoSpeedBookmarkFlash("video-speed-bookmark already added");
     return;
   }
 
-  window.videoSpeedBookmarkShow = show;
+  window.videoSpeedBookmarkFlash = flash;
 
   const element = document.createElement("div");
 
