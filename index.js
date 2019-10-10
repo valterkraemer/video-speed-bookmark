@@ -1,9 +1,10 @@
 (() => {
-  if (window.videoSpeedInit) {
+  if (window.videoSpeedBookmarkShow) {
+    window.videoSpeedBookmarkShow("video-speed-bookmark already added");
     return;
   }
 
-  window.videoSpeedInit = true;
+  window.videoSpeedBookmarkShow = show;
 
   const element = document.createElement("div");
 
@@ -21,30 +22,47 @@
   });
 
   let timer;
-
-  let xDown = false;
   let enteredSpeed = "";
 
+  const modifiers = {
+    Control: false,
+    Alt: false
+  };
+
   document.addEventListener("keydown", event => {
-    if (event.key === "x") {
-      xDown = true;
+    const key = event.key;
+
+    if (modifiers[key] !== undefined) {
+      modifiers[key] = true;
+      if (Object.values(modifiers).every(v => v)) {
+        enteredSpeed = '';
+        show('Enter speed');
+      }
       return;
     }
 
-    if (xDown) {
-      enteredSpeed += event.key;
+    if (Object.values(modifiers).every(v => v)) {
+      enteredSpeed += key;
       show(`${enteredSpeed}x`);
     }
   });
 
   document.addEventListener("keyup", event => {
-    if (event.key !== "x") {
+    const key = event.key;
+    
+    if (modifiers[key] === undefined) {
       return;
     }
 
-    xDown = false;
+    if (!Object.values(modifiers).every(v => v)) {
+      modifiers[key] = false;
+      return;
+    }
+
+    modifiers[key] = false;
 
     if (!enteredSpeed) {
+      hide();
       return;
     }
 
@@ -52,17 +70,17 @@
     enteredSpeed = "";
 
     if (isNaN(speed)) {
-      show("Invalid speed");
+      flash("Invalid speed");
       return;
     }
 
     const video = document.querySelector("video");
     if (!video) {
-      show("No video found");
+      flash("No video found");
       return;
     }
 
-    show(`${speed}x`);
+    flash(`${speed}x`);
     video.playbackRate = speed;
   });
 
@@ -72,9 +90,16 @@
     }
     element.innerText = text;
     document.body.appendChild(element);
-
-    timer = setTimeout(() => {
-      document.body.removeChild(element);
-    }, 2000);
   }
+
+  function hide() {
+    element.remove();
+  }
+
+  function flash(text) {
+    show(text);
+    timer = setTimeout(hide, 2000);
+  }
+
+  flash("video-speed-bookmark added");
 })();
